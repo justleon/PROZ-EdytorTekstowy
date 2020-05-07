@@ -1,6 +1,4 @@
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.plaf.metal.OceanTheme;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -15,13 +13,6 @@ public class TextEditor extends JFrame implements ActionListener {
     public TextEditor() {
         frame = new JFrame("Dokument tekstowy");
 
-        try {
-            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-
-            MetalLookAndFeel.setCurrentTheme(new OceanTheme());
-        }
-        catch (Exception e) {
-        }
 
         text = new JTextArea();
 
@@ -59,6 +50,10 @@ public class TextEditor extends JFrame implements ActionListener {
         menu2.add(item6);
         menu2.add(item7);
 
+        //chat z listenerem
+        JMenuItem chatButton = new JMenuItem("Chat");
+        chatButton.addActionListener(this);
+
         //wyjscie z programu
         JMenuItem exit_item = new JMenuItem("Zamknij");
         exit_item.addActionListener(this);
@@ -66,12 +61,14 @@ public class TextEditor extends JFrame implements ActionListener {
         //dodanie wszystkiego do MenuBar
         menubar.add(menu);
         menubar.add(menu2);
+        menubar.add(chatButton);
         menubar.add(exit_item);
 
         frame.setJMenuBar(menubar);
         frame.add(text);
         frame.setSize(1000, 600);
         frame.show();
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -160,12 +157,23 @@ public class TextEditor extends JFrame implements ActionListener {
             text.paste();
         }
 
+        else if (s.equals("Chat")) {
+            Chat chat = new Chat();
+            chat.LoginWindow();
+        }
+
         else if (s.equals("Zamknij")) {
-            frame.setVisible(false);
+            frame.dispose();
         }
     }
 
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         TextEditor editor = new TextEditor();
     }
 }
