@@ -4,7 +4,6 @@ import handlers.ConnectViewThread;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -74,8 +73,7 @@ public class ConnectView extends JPanel implements ActionListener {
         String portRegex = "\\d\\d?\\d?\\d?\\d?";
         if (hostInput.length() != 0 && portInput.matches(portRegex)) {
             try {
-                client = new Client(Integer.parseInt(portInput), hostInput,
-                        frame);
+                client = new Client(Integer.parseInt(portInput), hostInput, frame);
                 frame.setClient(client);
             } catch (NumberFormatException e1) {
                 JOptionPane.showMessageDialog(null, "Niepoprawne argumenty!", "Error", JOptionPane.ERROR_MESSAGE);

@@ -1,21 +1,15 @@
 package gui;
 
+import chat.ChatServer;
+import chat.ChatView;
 import handlers.Encoding;
 import handlers.MessageSwingWorker;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
-import javax.swing.GroupLayout;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -34,8 +28,8 @@ public class DocumentView extends JPanel {
     private static final boolean DEBUG = Debug.DEBUG;
     private JFrame frame;
     private JMenuBar menu;
-    private JMenu file, edit;
-    private JMenuItem newfile, open, exit, copy, cut, paste;
+    private JMenu file, edit, chat;
+    private JMenuItem newfile, open, exit, copy, cut, paste, connect;
     private JLabel documentNameLabel;
     private String documentName, documentText;
     private JTextArea area;
@@ -89,8 +83,10 @@ public class DocumentView extends JPanel {
         menu = new JMenuBar();
         file = new JMenu("Plik");
         edit = new JMenu("Edycja");
+        chat = new JMenu("Chat");
         menu.add(file);
         menu.add(edit);
+        menu.add(chat);
 
         newfile = new JMenuItem("Nowy");
         newfile.addActionListener(new NewFileListener());
@@ -115,6 +111,10 @@ public class DocumentView extends JPanel {
         exit = new JMenuItem("Wyjdź");
         exit.addActionListener(new ExitFileListener());
         file.add(exit);
+
+        connect = new JMenuItem("Chatuj");
+        connect.addActionListener(new ConnectListener());
+        chat.add(connect);
         frame.setJMenuBar(menu);
 
         caret = new DefaultCaret();
@@ -367,6 +367,21 @@ public class DocumentView extends JPanel {
 
         public void actionPerformed(ActionEvent e) {
             area.cut();
+        }
+    }
+
+    /**
+     * Słuchacz przycisku "Chatuj" z JMenu.
+     */
+
+    private class ConnectListener implements ActionListener {
+
+        /**
+         * Otwiera okno chatu.
+         */
+
+        public void actionPerformed( ActionEvent e) {
+            ChatView client = new ChatView();
         }
     }
 }

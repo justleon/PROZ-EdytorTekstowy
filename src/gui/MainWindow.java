@@ -69,7 +69,7 @@ public class MainWindow extends JFrame {
 
     public void openUsernameDialog() {
         String username = JOptionPane.showInputDialog("Wprowadź nazwę użytkownika:", "");
-        if(username==null){
+        if(username == null){
             JOptionPane.showMessageDialog(null, "Wprowadź poprawną nazwę użytkownika!", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else{

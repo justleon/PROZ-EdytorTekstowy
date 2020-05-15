@@ -1,6 +1,5 @@
 package client;
 
-
 import gui.MainWindow;
 
 import java.io.IOException;
@@ -184,3 +183,4 @@ public class Client {
         versionOfDocument = newVersion;
     }
 }
+

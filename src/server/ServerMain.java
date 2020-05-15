@@ -14,7 +14,7 @@ import debug.Debug;
 public class ServerMain {
     private static final boolean DEBUG = Debug.DEBUG;
     private static final int defaultPort = 6969;
-
+    public static int port;
     /**
      * Rozpoczęcie pracy Serwera Współdzielonego Edytora Tekstowego.
      * Punkt wejściowy do rozpoczęcia pracy serwera na określonym porcie.
@@ -27,7 +27,6 @@ public class ServerMain {
      */
 
     public static void main(String[] args) {
-        int port;
         if (args.length == 2 && args[0].equals("-p") && args[1].matches("\\d\\d?\\d?\\d?\\d?")) {
             port = Integer.parseInt(args[1]);
         } else {
@@ -35,6 +34,7 @@ public class ServerMain {
         }
         try {
             runServer(port);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
