@@ -8,8 +8,6 @@ import java.awt.event.KeyEvent;
 import java.net.*;
 import java.io.*;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.html.*;
 
 import java.util.ArrayList;
@@ -41,7 +39,7 @@ public class ChatView extends Thread{
 
         this.serverName = host;
         this.name = username;
-        this.PORT = 6970;
+        this.PORT = 50050;
 
         String fontfamily = "Arial, sans-serif";
         Font font = new Font(fontfamily, Font.PLAIN, 15);
