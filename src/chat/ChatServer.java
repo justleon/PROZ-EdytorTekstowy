@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 /**
  * Klasa ChatServer rozpoczyna pracę serwera chatu, który słucha określonego portu.
- * Domyślnie jest to port 6970.
+ * Domyślnie jest to port 50050.
  */
 
 public class ChatServer {
@@ -18,7 +18,7 @@ public class ChatServer {
     private ServerSocket server;
 
     public static void main(String[] args) throws IOException {
-        new ChatServer(6970).run();
+        new ChatServer(50050).run();
     }
 
     /**
