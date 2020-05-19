@@ -121,21 +121,18 @@ public class ChatView extends Thread{
         });
 
         // widok połączenia
-        final JTextField jtfName = new JTextField(this.name);
-        final JTextField jtfport = new JTextField(Integer.toString(this.PORT));
-        final JTextField jtfAddr = new JTextField(this.serverName);
+        final JLabel jlName = new JLabel("Imię: " + this.name);
+        final JLabel jlPort = new JLabel("Port: ");
+        final JTextField jtfPort = new JTextField(Integer.toString(this.PORT));
+        final JLabel jlAddr = new JLabel("Host: " + this.serverName);
         final JButton jcbtn = new JButton("Połącz");
-
-        // sprawdzenie, czy pola są puste
-        jtfName.getDocument().addDocumentListener(new TextListener(jtfName, jtfport, jtfAddr, jcbtn));
-        jtfport.getDocument().addDocumentListener(new TextListener(jtfName, jtfport, jtfAddr, jcbtn));
-        jtfAddr.getDocument().addDocumentListener(new TextListener(jtfName, jtfport, jtfAddr, jcbtn));
 
         // pozycje modułów
         jcbtn.setFont(font);
-        jtfAddr.setBounds(25, 380, 135, 40);
-        jtfName.setBounds(375, 380, 135, 40);
-        jtfport.setBounds(200, 380, 135, 40);
+        jlAddr.setBounds(25, 380, 135, 40);
+        jlName.setBounds(375, 380, 135, 40);
+        jlPort.setBounds(200, 380, 40, 40);
+        jtfPort.setBounds(240, 380, 75, 40);
         jcbtn.setBounds(575, 380, 100, 40);
 
         // kolor
@@ -146,9 +143,10 @@ public class ChatView extends Thread{
         jfr.add(jcbtn);
         jfr.add(jtextFilDiscuSP);
         jfr.add(jsplistuser);
-        jfr.add(jtfName);
-        jfr.add(jtfport);
-        jfr.add(jtfAddr);
+        jfr.add(jlName);
+        jfr.add(jlPort);
+        jfr.add(jtfPort);
+        jfr.add(jlAddr);
         jfr.setVisible(true);
 
 
@@ -162,10 +160,10 @@ public class ChatView extends Thread{
         jcbtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    name = jtfName.getText();
-                    String port = jtfport.getText();
-                    serverName = jtfAddr.getText();
-                    PORT = Integer.parseInt(port);
+                    //name = jlName.getText();
+                    String port = jtfPort.getText();
+                    //serverName = jlAddr.getText();
+                    //PORT = Integer.parseInt(port);
 
                     appendToPane(jtextFilDiscu, "<span>Łączenie z " + serverName + " na porcie " + PORT + "...</span>");
                     server = new Socket(serverName, PORT);
@@ -184,9 +182,10 @@ public class ChatView extends Thread{
                     read.start();
 
                     //zmiana widoku
-                    jfr.remove(jtfName);
-                    jfr.remove(jtfport);
-                    jfr.remove(jtfAddr);
+                    jfr.remove(jlName);
+                    jfr.remove(jlPort);
+                    jfr.remove(jtfPort);
+                    jfr.remove(jlAddr);
                     jfr.remove(jcbtn);
                     jfr.add(jsbtn);
                     jfr.add(jtextInputChatSP);
@@ -207,9 +206,10 @@ public class ChatView extends Thread{
         jsbtndeco.addActionListener(new ActionListener()  {
             public void actionPerformed(ActionEvent ae) {
                 //zmiana widoku
-                jfr.add(jtfName);
-                jfr.add(jtfport);
-                jfr.add(jtfAddr);
+                jfr.add(jlName);
+                jfr.add(jtfPort);
+                jfr.add(jlPort);
+                jfr.add(jlAddr);
                 jfr.add(jcbtn);
                 jfr.remove(jsbtn);
                 jfr.remove(jtextInputChatSP);
@@ -226,47 +226,6 @@ public class ChatView extends Thread{
         });
     }
 
-    /**
-     * Klasa obługująca pracę chatu, uaktualniająca widok.
-     */
-
-    public class TextListener implements DocumentListener{
-        JTextField jtf1;
-        JTextField jtf2;
-        JTextField jtf3;
-        JButton jcbtn;
-
-        public TextListener(JTextField jtf1, JTextField jtf2, JTextField jtf3, JButton jcbtn){
-            this.jtf1 = jtf1;
-            this.jtf2 = jtf2;
-            this.jtf3 = jtf3;
-            this.jcbtn = jcbtn;
-        }
-
-        public void changedUpdate(DocumentEvent e) {}
-
-        public void removeUpdate(DocumentEvent e) {
-            if(jtf1.getText().trim().equals("") ||
-                    jtf2.getText().trim().equals("") ||
-                    jtf3.getText().trim().equals("")
-            ){
-                jcbtn.setEnabled(false);
-            }else{
-                jcbtn.setEnabled(true);
-            }
-        }
-        public void insertUpdate(DocumentEvent e) {
-            if(jtf1.getText().trim().equals("") ||
-                    jtf2.getText().trim().equals("") ||
-                    jtf3.getText().trim().equals("")
-            ){
-                jcbtn.setEnabled(false);
-            }else{
-                jcbtn.setEnabled(true);
-            }
-        }
-
-    }
 
     /**
      * Wysyłanie wiadomości.
