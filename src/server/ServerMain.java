@@ -8,12 +8,12 @@ import debug.Debug;
 
 /**
  * Klasa ServerMain rozpoczyna pracę serwera, który słucha określonego portu.
- * Domyślnie jest to port o numerze 6969.
+ * Domyślnie jest to port o numerze 50000.
  */
 
 public class ServerMain {
     private static final boolean DEBUG = Debug.DEBUG;
-    private static final int defaultPort = 6969;
+    private static final int defaultPort = 50000;
     public static int port;
 
     /**
