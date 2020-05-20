@@ -39,7 +39,7 @@ public class ConnectView extends JPanel implements ActionListener {
 
     public ConnectView(MainWindow frame) {
         this.frame = frame;
-        serverAddressLabel = new JLabel("Wprowadź adres IPv6 serwera:");
+        serverAddressLabel = new JLabel("Wprowadź adres serwera:");
         hostLabel = new JLabel("Host:");
         host = new JTextField();
         host.addActionListener(this);

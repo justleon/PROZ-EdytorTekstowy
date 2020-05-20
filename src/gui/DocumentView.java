@@ -1,13 +1,11 @@
 package gui;
 
-import chat.ChatServer;
 import chat.ChatView;
 import handlers.Encoding;
 import handlers.MessageSwingWorker;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -40,6 +38,7 @@ public class DocumentView extends JPanel {
     private final String username;
     private int currentVersion;
     private boolean sent = false; // do zarządzania kursorem
+    ChatView clientChat; // do chatu
 
     /**
      * Tworzenie nowego DocumentView.
@@ -381,7 +380,7 @@ public class DocumentView extends JPanel {
          */
 
         public void actionPerformed( ActionEvent e) {
-            ChatView clientChat = new ChatView(username, client.getHost());
+            clientChat = new ChatView(username, client.getHost());
         }
     }
 }
