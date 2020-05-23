@@ -1,10 +1,9 @@
 package chat;
 
+import gui.DocumentView;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.net.*;
 import java.io.*;
 import javax.swing.*;
@@ -31,6 +30,16 @@ public class ChatView extends Thread{
     PrintWriter output;
     Socket server;
 
+    private JFrame jfr;
+    private JLabel jlName;
+    private JTextField jtfPort;
+    private JLabel jlPort;
+    private JLabel jlAddr;
+    private JButton jcbtn;
+    private JButton jsbtn;
+    private JScrollPane jtextInputChatSP;
+    private JButton jsbtndeco;
+
     /**
      * Konstruktor
      */
@@ -44,11 +53,13 @@ public class ChatView extends Thread{
         String fontfamily = "Arial, sans-serif";
         Font font = new Font(fontfamily, Font.PLAIN, 15);
 
-        final JFrame jfr = new JFrame("Chat Współdzielonego Dokumentu Tekstowego");
+        jfr = new JFrame("Chat Współdzielonego Dokumentu Tekstowego");
         jfr.getContentPane().setLayout(null);
         jfr.setSize(700, 500);
         jfr.setResizable(false);
-        jfr.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        // użytkownik nie może zamknąć okna zanim się połączy
+        // dopiero po połączeniu można zamknąć okno chatu
+        jfr.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         // okno wiadomości
         jtextFilDiscu.setBounds(25, 25, 490, 320);
@@ -77,16 +88,16 @@ public class ChatView extends Thread{
         jtextInputChat.setBounds(0, 350, 400, 50);
         jtextInputChat.setFont(font);
         jtextInputChat.setMargin(new Insets(6, 6, 6, 6));
-        final JScrollPane jtextInputChatSP = new JScrollPane(jtextInputChat);
+        jtextInputChatSP = new JScrollPane(jtextInputChat);
         jtextInputChatSP.setBounds(25, 350, 650, 50);
 
         // przycisk "Wyślij"
-        final JButton jsbtn = new JButton("Wyślij");
+        jsbtn = new JButton("Wyślij");
         jsbtn.setFont(font);
         jsbtn.setBounds(575, 410, 100, 35);
 
         // przycisk "Rozłącz"
-        final JButton jsbtndeco = new JButton("Rozłącz");
+        jsbtndeco = new JButton("Rozłącz");
         jsbtndeco.setFont(font);
         jsbtndeco.setBounds(25, 410, 130, 35);
 
@@ -119,11 +130,11 @@ public class ChatView extends Thread{
         });
 
         // widok połączenia
-        final JLabel jlName = new JLabel("Imię: " + this.name);
-        final JLabel jlPort = new JLabel("Port: ");
-        final JTextField jtfPort = new JTextField(Integer.toString(this.PORT));
-        final JLabel jlAddr = new JLabel("Host: " + this.serverName);
-        final JButton jcbtn = new JButton("Połącz");
+        jlName = new JLabel("Imię: " + this.name);
+        jlPort = new JLabel("Port: ");
+        jtfPort = new JTextField(Integer.toString(this.PORT));
+        jlAddr = new JLabel("Host: " + this.serverName);
+        jcbtn = new JButton("Połącz");
 
         // pozycje modułów
         jcbtn.setFont(font);
@@ -204,24 +215,45 @@ public class ChatView extends Thread{
         jsbtndeco.addActionListener(new ActionListener()  {
             public void actionPerformed(ActionEvent ae) {
                 //zmiana widoku
-                jfr.add(jlName);
-                jfr.add(jtfPort);
-                jfr.add(jlPort);
-                jfr.add(jlAddr);
-                jfr.add(jcbtn);
-                jfr.remove(jsbtn);
-                jfr.remove(jtextInputChatSP);
-                jfr.remove(jsbtndeco);
-                jfr.revalidate();
-                jfr.repaint();
-                read.interrupt();
-                jtextListUsers.setText(null);
-                jtextFilDiscu.setBackground(Color.LIGHT_GRAY);
-                jtextListUsers.setBackground(Color.LIGHT_GRAY);
-                appendToPane(jtextFilDiscu, "<span>Połączenie zamknięte.</span>");
-                output.close();
+                disconnect();
             }
         });
+
+        // podczas zamknięcia okna chatu wykonuje się najpierw rozłączenie
+        jfr.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                disconnect();
+                DocumentView.clientChatIsOpen = false;
+                System.out.println("Chat zamknięty.");
+                    e.getWindow().dispose();
+                }
+        });
+
+    }
+
+    /**
+     * Funkcja służąca do rozłączania chatu.
+     */
+
+    public void disconnect() {
+        jfr.add(jlName);
+        jfr.add(jtfPort);
+        jfr.add(jlPort);
+        jfr.add(jlAddr);
+        jfr.add(jcbtn);
+        jfr.remove(jsbtn);
+        jfr.remove(jtextInputChatSP);
+        jfr.remove(jsbtndeco);
+        jfr.revalidate();
+        jfr.repaint();
+        read.interrupt();
+        jtextListUsers.setText(null);
+        jtextFilDiscu.setBackground(Color.LIGHT_GRAY);
+        jtextListUsers.setBackground(Color.LIGHT_GRAY);
+        appendToPane(jtextFilDiscu, "<span>Połączenie zamknięte.</span>");
+        output.close();
     }
 
 
@@ -292,3 +324,4 @@ public class ChatView extends Thread{
         }
     }
 }
+
