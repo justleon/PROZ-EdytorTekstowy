@@ -39,6 +39,7 @@ public class DocumentView extends JPanel {
     private int currentVersion;
     private boolean sent = false; // do zarządzania kursorem
     ChatView clientChat; // do chatu
+    public static boolean clientChatIsOpen = false;
 
     /**
      * Tworzenie nowego DocumentView.
@@ -114,6 +115,11 @@ public class DocumentView extends JPanel {
         connect = new JMenuItem("Chatuj");
         connect.addActionListener(new ConnectListener());
         chat.add(connect);
+
+        disconnect = new JMenuItem("Rozłącz");
+        disconnect.addActionListener(new DisconnectListener());
+        chat.add(disconnect);
+
         frame.setJMenuBar(menu);
 
         caret = new DefaultCaret();
@@ -380,7 +386,23 @@ public class DocumentView extends JPanel {
          */
 
         public void actionPerformed( ActionEvent e) {
-            clientChat = new ChatView(username, client.getHost());
+            if (!clientChatIsOpen) {
+                clientChat = new ChatView(username, client.getHost());
+                clientChatIsOpen = true;
+            }
+        }
+    }
+
+    private class DisconnectListener implements ActionListener {
+
+        /**
+         * Rozłącza okno chatu.
+         */
+
+        public void actionPerformed(ActionEvent e) {
+            if (clientChatIsOpen) {
+                clientChat.disconnect();
+            }
         }
     }
 }
