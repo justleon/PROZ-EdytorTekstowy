@@ -1,5 +1,6 @@
 package chat;
 
+import debug.Debug;
 import gui.DocumentView;
 
 import java.awt.*;
@@ -224,7 +225,11 @@ public class ChatView extends Thread{
         {
             @Override
             public void windowClosing(WindowEvent e) {
-                disconnect();
+                try {
+                    disconnect();
+                } catch (NullPointerException ex) {
+                    if(Debug.DEBUG){ System.out.println("Chat zamknięty przed nawiązaniem połączenia.");}
+                }
                 DocumentView.clientChatIsOpen = false;
                 System.out.println("Chat zamknięty.");
                     e.getWindow().dispose();
@@ -237,7 +242,7 @@ public class ChatView extends Thread{
      * Funkcja służąca do rozłączania chatu.
      */
 
-    public void disconnect() {
+    public void disconnect() throws NullPointerException{
         jfr.add(jlName);
         jfr.add(jtfPort);
         jfr.add(jlPort);
