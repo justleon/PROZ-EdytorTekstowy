@@ -50,13 +50,37 @@ public class ConnectView extends JPanel implements ActionListener {
         connectButton.addActionListener(this);
         this.client = frame.getClient();
 
+        /**
+         * Użycie GroupLayout - laoyout managera.
+         */
+
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
         layout.setAutoCreateContainerGaps(true);
         layout.setAutoCreateGaps(true);
 
-        layout.setHorizontalGroup(layout.createParallelGroup().addComponent(serverAddressLabel).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup().addComponent(hostLabel).addComponent(portLabel)).addGroup(layout.createParallelGroup().addComponent(host, 100, 150, Short.MAX_VALUE).addComponent(port, 100, 150, Short.MAX_VALUE))).addComponent(connectButton));
-        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(serverAddressLabel).addGroup(layout.createParallelGroup().addComponent(hostLabel).addComponent(host, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)).addGroup(layout.createParallelGroup().addComponent(portLabel).addComponent(port, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)).addComponent(connectButton));
+        layout.setHorizontalGroup(
+                layout.createParallelGroup()
+                .addComponent(serverAddressLabel)
+                .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup()
+                                .addComponent(hostLabel)
+                                .addComponent(portLabel))
+                                .addGroup(layout.createParallelGroup()
+                                    .addComponent(host, 100, 150, Short.MAX_VALUE)
+                                    .addComponent(port, 100, 150, Short.MAX_VALUE)))
+                .addComponent(connectButton));
+
+        layout.setVerticalGroup(
+                layout.createSequentialGroup()
+                .addComponent(serverAddressLabel)
+                .addGroup(layout.createParallelGroup()
+                        .addComponent(hostLabel)
+                        .addComponent(host, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup()
+                        .addComponent(portLabel)
+                        .addComponent(port, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(connectButton));
     }
 
     /**
