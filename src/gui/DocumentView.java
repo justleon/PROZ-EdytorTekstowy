@@ -436,6 +436,10 @@ public class DocumentView extends JPanel {
         }
     }
 
+    /**
+     * Słuchacz przycisku "Rozłącz" z JMenu.
+     */
+
     private class DisconnectListener implements ActionListener {
 
         /**
@@ -443,10 +447,14 @@ public class DocumentView extends JPanel {
          */
 
         public void actionPerformed(ActionEvent e) {
+            // jeśli chat jest otwarty
             if (clientChatIsOpen) {
-                clientChat.disconnect();
+                try {
+                    clientChat.disconnect();
+                } catch (NullPointerException ex) {
+                    if(Debug.DEBUG){ System.out.println("Chat rozłączony przed nawiązaniem połączenia.");}
+                }
             }
         }
     }
-
 }
