@@ -161,7 +161,7 @@ public class ChatView extends Thread{
 
         // informacja o chacie
         appendToPane(jtextFilDiscu, "<h2>Możliwe komendy:</h2>"
-                +"<b>@nazwaużytkownika</b>, aby wysłać prywatną wiadomości do użytkownika 'nazwaużytkownika" + "<br>"
+                +"<b>@nazwaużytkownika</b>, aby wysłać prywatną wiadomości do użytkownika 'nazwaużytkownika'" + "<br>"
                 +"<b>:)</b> emotikony" + "<br>"
                 +"<b>strzałka w górę</b>, aby pobrać ostatnio wpisaną wiadomość" + "<br>");
 
@@ -324,4 +324,3 @@ public class ChatView extends Thread{
         }
     }
 }
-
