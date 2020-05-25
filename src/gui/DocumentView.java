@@ -6,6 +6,9 @@ import handlers.MessageSwingWorker;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -27,7 +30,7 @@ public class DocumentView extends JPanel {
     private JFrame frame;
     private JMenuBar menu;
     private JMenu file, edit, chat;
-    private JMenuItem newfile, open, exit, copy, cut, paste, connect, disconnect;
+    private JMenuItem newfile, open, save, exit, copy, cut, paste, connect, disconnect;
     private JLabel documentNameLabel;
     private String documentName, documentText;
     private JTextArea area;
@@ -107,6 +110,10 @@ public class DocumentView extends JPanel {
         open = new JMenuItem("Otwórz");
         open.addActionListener(new OpenFileListener());
         file.add(open);
+
+        save = new JMenuItem("Zapisz");
+        save.addActionListener(new SaveFileListener());
+        file.add(save);
 
         exit = new JMenuItem("Wyjdź");
         exit.addActionListener(new ExitFileListener());
@@ -307,6 +314,42 @@ public class DocumentView extends JPanel {
         }
     }
 
+    /**
+     * Słuchacz przucisku "Zapisz" z JMenu.
+     */
+
+    private class SaveFileListener implements ActionListener {
+
+        /**
+         * Utworzenie nowego obiketu klasy JFileChooser, wywołanie funkcji showsSaveDialog, aby wyświetlić okno
+         * dialogowe zapisywania, ustawienie labela na ścieżkę wybranego katalogu oraz utworzenie file writera i pisanie
+         * do pliku.
+         */
+
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser jfc = new JFileChooser("f:");
+            int r = jfc.showSaveDialog(null);
+            File fi = new File(jfc.getSelectedFile().getAbsolutePath());
+
+            if (r == JFileChooser.APPROVE_OPTION) {
+                try {
+                    FileWriter wr = new FileWriter(fi, false);
+                    BufferedWriter w = new BufferedWriter(wr);
+
+                    w.write(area.getText());
+
+                    w.flush();
+                    w.close();
+                } catch (Exception evt) {
+                    JOptionPane.showMessageDialog(frame, evt.getMessage());
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(frame, "Użytkownik anulował zapisywanie.");
+            }
+        }
+    }
+
 
     /**
      * Słuchacz przycisku "Wyjdź" z JMenu.
@@ -405,4 +448,5 @@ public class DocumentView extends JPanel {
             }
         }
     }
+
 }
