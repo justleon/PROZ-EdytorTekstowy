@@ -328,24 +328,18 @@ public class DocumentView extends JPanel {
 
         public void actionPerformed(ActionEvent e) {
             JFileChooser jfc = new JFileChooser("f:");
-            int r = jfc.showSaveDialog(null);
-            File fi = new File(jfc.getSelectedFile().getAbsolutePath());
 
-            if (r == JFileChooser.APPROVE_OPTION) {
-                try {
-                    FileWriter wr = new FileWriter(fi, false);
-                    BufferedWriter w = new BufferedWriter(wr);
+            try {
+                File fi = new File(jfc.getSelectedFile().getAbsolutePath());
+                FileWriter wr = new FileWriter(fi, false);
+                BufferedWriter w = new BufferedWriter(wr);
 
-                    w.write(area.getText());
+                w.write(area.getText());
 
-                    w.flush();
-                    w.close();
-                } catch (Exception evt) {
-                    JOptionPane.showMessageDialog(frame, evt.getMessage());
-                }
-            }
-            else {
-                JOptionPane.showMessageDialog(frame, "Użytkownik anulował zapisywanie.");
+                w.flush();
+                w.close();
+            } catch (Exception evt) {
+                JOptionPane.showMessageDialog(frame, "Zapisywanie anulowane.");
             }
         }
     }
