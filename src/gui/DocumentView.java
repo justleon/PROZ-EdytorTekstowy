@@ -6,9 +6,7 @@ import handlers.MessageSwingWorker;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import java.io.*;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -29,8 +27,8 @@ public class DocumentView extends JPanel {
     private static final boolean DEBUG = Debug.DEBUG;
     private JFrame frame;
     private JMenuBar menu;
-    private JMenu file, edit, chat;
-    private JMenuItem newfile, open, save, exit, copy, cut, paste, connect, disconnect;
+    private JMenu server, file, edit, chat;
+    private JMenuItem newfile, open, load, save, exit, copy, cut, paste, connect, disconnect;
     private JLabel documentNameLabel;
     private String documentName, documentText;
     private JTextArea area;
@@ -84,16 +82,34 @@ public class DocumentView extends JPanel {
     private void createLayout() {
 
         menu = new JMenuBar();
+        server = new JMenu("Serwer");
         file = new JMenu("Plik");
         edit = new JMenu("Edycja");
         chat = new JMenu("Chat");
+        menu.add(server);
         menu.add(file);
         menu.add(edit);
         menu.add(chat);
 
         newfile = new JMenuItem("Nowy");
         newfile.addActionListener(new NewFileListener());
-        file.add(newfile);
+        server.add(newfile);
+
+        open = new JMenuItem("Otwórz");
+        open.addActionListener(new OpenFileListener());
+        server.add(open);
+
+        exit = new JMenuItem("Wyjdź");
+        exit.addActionListener(new ExitFileListener());
+        server.add(exit);
+
+        save = new JMenuItem("Zapisz");
+        save.addActionListener(new SaveFileListener());
+        file.add(save);
+
+        load = new JMenuItem("Wczytaj");
+        load.addActionListener(new LoadFileListener());
+        file.add(load);
 
         copy = new JMenuItem("Kopiuj");
         copy.addActionListener(new CopyListener());
@@ -106,18 +122,6 @@ public class DocumentView extends JPanel {
         paste = new JMenuItem("Wklej");
         paste.addActionListener(new PasteListener());
         edit.add(paste);
-
-        open = new JMenuItem("Otwórz");
-        open.addActionListener(new OpenFileListener());
-        file.add(open);
-
-        save = new JMenuItem("Zapisz");
-        save.addActionListener(new SaveFileListener());
-        file.add(save);
-
-        exit = new JMenuItem("Wyjdź");
-        exit.addActionListener(new ExitFileListener());
-        file.add(exit);
 
         connect = new JMenuItem("Chatuj");
         connect.addActionListener(new ConnectListener());
@@ -314,36 +318,6 @@ public class DocumentView extends JPanel {
         }
     }
 
-    /**
-     * Słuchacz przucisku "Zapisz" z JMenu.
-     */
-
-    private class SaveFileListener implements ActionListener {
-
-        /**
-         * Utworzenie nowego obiketu klasy JFileChooser, wywołanie funkcji showsSaveDialog, aby wyświetlić okno
-         * dialogowe zapisywania, ustawienie labela na ścieżkę wybranego katalogu oraz utworzenie file writera i pisanie
-         * do pliku.
-         */
-
-        public void actionPerformed(ActionEvent e) {
-            JFileChooser jfc = new JFileChooser("f:");
-
-            try {
-                File fi = new File(jfc.getSelectedFile().getAbsolutePath());
-                FileWriter wr = new FileWriter(fi, false);
-                BufferedWriter w = new BufferedWriter(wr);
-
-                w.write(area.getText());
-
-                w.flush();
-                w.close();
-            } catch (Exception evt) {
-                JOptionPane.showMessageDialog(frame, "Zapisywanie anulowane.");
-            }
-        }
-    }
-
 
     /**
      * Słuchacz przycisku "Wyjdź" z JMenu.
@@ -363,6 +337,73 @@ public class DocumentView extends JPanel {
                     client.sendMessageToServer("bye");
                 }
                 System.exit(0);
+            }
+        }
+    }
+
+
+    /**
+     * Słuchacz przycisku "Zapisz" z JMenu.
+     */
+
+    private class SaveFileListener implements ActionListener {
+
+        /**
+         * Utworzenie nowego obiketu klasy JFileChooser, ustawienie labela na ścieżkę wybranego katalogu oraz utworzenie file writera i pisanie
+         * do pliku.
+         */
+
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser jfc = new JFileChooser("f:");
+
+            try {
+                jfc.showSaveDialog(null);
+                File fi = new File(jfc.getSelectedFile().getAbsolutePath());
+                FileWriter wr = new FileWriter(fi, false);
+                BufferedWriter w = new BufferedWriter(wr);
+
+                w.write(area.getText());
+
+                w.flush();
+                w.close();
+            } catch (Exception evt) {
+                JOptionPane.showMessageDialog(frame, "Zapisywanie anulowane.");
+            }
+        }
+    }
+
+
+    /**
+     * Słuchacz przycisku "Wczytaj" z JMenu.
+     */
+
+    private class LoadFileListener implements ActionListener {
+
+        /**
+         * Utworzenie nowego obiketu klasy JFileChooser, ustawienie labela na ścieżkę wybranego katalogu oraz utworzenie file writera i pisanie
+         * do pliku.
+         */
+
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser jfc = new JFileChooser("f:");
+
+            try {
+                jfc.showOpenDialog(null);
+                File fi = new File(jfc.getSelectedFile().getAbsolutePath());
+                String s1 = "", sline;
+                FileReader fr = new FileReader(fi);
+                BufferedReader br = new BufferedReader(fr);
+                sline = br.readLine();
+
+                // wczytywanie całego pliku
+                while ((s1 = br.readLine()) != null)
+                    sline = sline + "\n" + s1;
+
+                //ustawienie tekstu
+                area.setText(sline);
+
+            } catch (Exception evt) {
+                JOptionPane.showMessageDialog(frame, "Wczytywanie anulowane.");
             }
         }
     }
