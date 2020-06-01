@@ -15,8 +15,6 @@ import debug.Debug;
 /**
  * Klasa OurThreadClass zajmuje się tworzeniem nowych wątków do obsługi klienta.
  * Kiedy wątek jest aktywny, może słuchać wiadomości, obługiwać wiadomości i wysłać z powrtotem wiadomości serwera do klienta.
- *
- * Testy: OurThreadClassTest.java.
  */
 
 public class OurThreadClass extends Thread {

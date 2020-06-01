@@ -28,11 +28,7 @@ public class ServerMain {
      */
 
     public static void main(String[] args) {
-        if (args.length == 2 && args[0].equals("-p") && args[1].matches("\\d\\d?\\d?\\d?\\d?")) {
-            port = Integer.parseInt(args[1]);
-        } else {
             port = defaultPort;
-        }
         try {
             runServer(port);
 
