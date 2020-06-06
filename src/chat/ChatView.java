@@ -173,7 +173,7 @@ public class ChatView extends Thread{
                     //name = jlName.getText();
                     String port = jtfPort.getText();
                     //serverName = jlAddr.getText();
-                    //PORT = Integer.parseInt(port);
+                    PORT = Integer.parseInt(port);
 
                     appendToPane(jtextFilDiscu, "<span>Łączenie z " + serverName + " na porcie " + PORT + "...</span>");
                     server = new Socket(serverName, PORT);
